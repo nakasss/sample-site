@@ -405,3 +405,13 @@ function twentysixteen_widget_tag_cloud_args( $args ) {
 	return $args;
 }
 add_filter( 'widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args' );
+
+
+/**
+ * Includes functions for customizeing admin screen for scopic mobile app video management.
+ * 
+ * Function files is in ./scopic-admin-functions/*
+ */
+require_once locate_template('scopic-admin-functions/video-post.php');
+require_once locate_template('scopic-admin-functions/modify-func.php');
+require_once locate_template('scopic-admin-functions/hide-func.php');
