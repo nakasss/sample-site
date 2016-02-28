@@ -1,0 +1,110 @@
+# Copyright (C) 2014 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp2cloud-wordpress-to-cloud\n"
+"POT-Creation-Date: 2014-01-04 08:32:34+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: setoptions.php:29
+msgid "Invalid Distribution URL: %1$s"
+msgstr ""
+
+#: setoptions.php:36
+msgid "Settings updated."
+msgstr ""
+
+#: setoptions.php:54
+msgid "WordPress to Cloud Settings"
+msgstr ""
+
+#: setoptions.php:56
+msgid "Content Distribution Network (CDN)"
+msgstr ""
+
+#: setoptions.php:57
+msgid ""
+"    You can setup a CDN (e.g. <a href=\"http://aws.amazon.com/cloudfront/"
+"\">Amazon CloudFront</a>)\n"
+"                for media files to make content delivery even faster.  To do "
+"so, please specify the distribution\n"
+"                URL that would be used instead of the <em>host/bucket</em> "
+"part of the cloud storage location.\n"
+"                For example, if your cloud storage location looks like "
+"<em>s3.amazonaws.com/oblaksoft-yapixx/db0</em>\n"
+"                and the distribution URL looks like <em>d111111abcdef8."
+"cloudfront.net</em>, the media files\n"
+"                would have URLs like <em>http://d111111abcdef8.cloudfront."
+"net/db0/path/to/foo.jpg</em>.  You\n"
+"                need to <a href=\"http://www.slideshare.net/artemlivshits/"
+"wordpress-on-s3-now-with-cdn\">configure</a>\n"
+"                the CDN to point it to the cloud storage origin location."
+msgstr ""
+
+#: setoptions.php:65
+msgid "Distribution URL"
+msgstr ""
+
+#: setoptions.php:66
+msgid "E.g. %1$s"
+msgstr ""
+
+#: setoptions.php:68
+msgid "Cloud database protection"
+msgstr ""
+
+#: setoptions.php:69
+msgid ""
+"    If you opt to store your whole WordPress database in the cloud storage, "
+"WordPress to Cloud can\n"
+"                warn you if any of the WordPress tables are not stored in "
+"the cloud. If you decide to ignore\n"
+"                this warning, you should consider protecting your data by "
+"other means (e.g. database backups)."
+msgstr ""
+
+#: setoptions.php:73
+msgid "Warn when WordPress tables are not stored in the cloud storage"
+msgstr ""
+
+#: setoptions.php:75
+msgid "Save Changes"
+msgstr ""
+
+#: wp2cloud.php:153
+msgid ""
+"Cannot create <b>%1$s</b> table -- %2$s  %3$s requires the Cloud Storage "
+"Engine for MySQL\n"
+" (%5$s) to be installed and configured on the MySQL server.  As an example "
+"of property configured\n"
+" %4$s and %3$s you can use %6$s."
+msgstr ""
+
+#: wp2cloud.php:280
+msgid "WordPress to Cloud"
+msgstr ""
+
+#: wp2cloud.php:346
+msgid ""
+"%1$s, and %2$d more table are not managed by the %3$s and not protected by "
+"the cloud storage."
+msgid_plural ""
+"%1$s, and %2$d more tables are not managed by the %3$s and not protected by "
+"the cloud storage."
+msgstr[0] ""
+msgstr[1] ""
+
+#: wp2cloud.php:352
+msgid ""
+"%1$s table is not managed by the %2$s and not protected by the cloud storage."
+msgid_plural ""
+"%1$s tables are not managed by the %2$s and not protected by the cloud "
+"storage."
+msgstr[0] ""
+msgstr[1] ""

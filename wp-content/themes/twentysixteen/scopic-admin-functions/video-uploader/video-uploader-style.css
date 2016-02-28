@@ -1,0 +1,128 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 28, 2016, 8:30:10 PM
+    Author     : nakas
+*/
+
+
+/*#video-uploader-wrapper {
+    background-color: #000000 !important;
+}*/
+
+#video-upload-box .inside {
+    padding: 0 0 0 0;
+}
+
+#video-uploaded {
+    padding: 6px 12px 6px;
+}
+
+#video-uploaded video {
+    width: 100%;
+    height: auto;
+}
+
+#no-video-uploaded {
+    padding: 6px 12px 0;
+}
+
+#no-video-uploaded .title-wrapper h1 {
+    text-align: center;
+}
+
+#no-video-uploaded .form-wrapper {
+    width: 100%;
+/*    padding: 100px 6px 100px 6px;*/
+    box-sizing: border-box;
+}
+#no-video-uploaded .form-wrapper input {
+    width: 100%;
+}
+
+#no-video-uploaded .gcs-link-wrapper .gcs-link {
+    width: 100%;
+    font-weight: bold;
+}
+
+#tutorial-open-wrapper {
+    width: 100%;
+    border-top: 1px solid #ddd;
+    background: #f5f5f5;
+    position: relative;
+}
+#tutorial-open-wrapper .tutorial-link {
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+#tutorial-open-wrapper .tutorial-link:before {
+    content: "\f348";
+    color: #444;
+    display: inline-block;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    left: -1px;
+    padding: 0 5px 0 0;
+    position: relative;
+    top: 0;
+    text-decoration: none!important;
+    vertical-align: top;
+    -webkit-font-smoothing: antialiased;
+}
+#tutorial-open-wrapper .handlediv {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#tutorial-open-wrapper .handlediv .toggle-indicator[aria-hidden^="true"]:before {
+    content: "\f140";
+}
+#tutorial-open-wrapper .handlediv .toggle-indicator[aria-hidden^="false"]:before {
+    content: "\f142";
+}
+
+#tutorial-post-wrapper {
+    border-top: 1px solid #ddd;
+    display: none;
+}
+
+#tutorial-post-wrapper .tutorial-post-content {
+    font-size: 14px;
+    padding: 12px 24px;
+}
+
+#tutorial-post-wrapper .tutorial-post-content p {
+    font-size: 14px;
+}
+
+#tutorial-post-wrapper .tutorial-post-content img {
+    width: 100%;
+    height: auto;
+    margin: 10px 0 0 0;
+    box-shadow: 0px 5px 15px -5px rgba(0, 0, 0, 0.8); /*横方向　下方向　ぼかし　広がり　色 */
+}
+
+#tutorial-post-wrapper .tutorial-close-btn-wrapper {
+    width: 100%;
+    border-top: 1px solid #ddd;
+    background: #f5f5f5;
+    position: relative;
+}
+#tutorial-post-wrapper .tutorial-close-btn-wrapper .tutorial-link {
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}
+#tutorial-post-wrapper .tutorial-close-btn-wrapper .handlediv {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+

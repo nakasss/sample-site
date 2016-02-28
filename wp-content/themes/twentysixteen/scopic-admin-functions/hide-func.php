@@ -11,13 +11,12 @@
  */
 add_action('admin_menu', 'remove_sidebar_menus');
 function remove_sidebar_menus() {
-    //remove_menu_page('edit.php');
-    remove_menu_page('edit.php?post_type=page');
     remove_menu_page('edit-comments.php');
     
     //hide from editor users
-    if (!current_user_can('level_10')) {
+    if (!current_user_can('administrator')) {
         remove_menu_page('edit.php');
+        remove_menu_page('edit.php?post_type=page');
         remove_menu_page('tools.php');
     }
 }
@@ -28,6 +27,7 @@ function remove_sidebar_menus() {
  */
 add_action('admin_bar_menu', 'remove_adminbar_menus', 201);
 function remove_adminbar_menus($wp_admin_bar) {
+    $wp_admin_bar->remove_menu( 'view' );
     $wp_admin_bar->remove_menu('comments');
     $wp_admin_bar->remove_menu('new-post');
     $wp_admin_bar->remove_menu('new-page');

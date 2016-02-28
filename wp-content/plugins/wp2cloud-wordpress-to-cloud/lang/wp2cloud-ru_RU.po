@@ -1,0 +1,150 @@
+# Copyright (C) 2014 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp2cloud-wordpress-to-cloud\n"
+"POT-Creation-Date: 2014-01-04 08:32:34+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n%10==1 && n%100!=11) ? 3 : "
+"((n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20)) ? 1 : 2);\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: setoptions.php:29
+msgid "Invalid Distribution URL: %1$s"
+msgstr "Неправильный URL сети доставки контента: %1$s"
+
+#: setoptions.php:36
+msgid "Settings updated."
+msgstr "Установки сохранены."
+
+#: setoptions.php:54
+msgid "WordPress to Cloud Settings"
+msgstr "Установки WordPress в Облаке"
+
+#: setoptions.php:56
+msgid "Content Distribution Network (CDN)"
+msgstr "Сеть доставки контента (CDN)"
+
+#: setoptions.php:57
+msgid ""
+"    You can setup a CDN (e.g. <a href=\"http://aws.amazon.com/cloudfront/"
+"\">Amazon CloudFront</a>)\n"
+"                for media files to make content delivery even faster.  To do "
+"so, please specify the distribution\n"
+"                URL that would be used instead of the <em>host/bucket</em> "
+"part of the cloud storage location.\n"
+"                For example, if your cloud storage location looks like "
+"<em>s3.amazonaws.com/oblaksoft-yapixx/db0</em>\n"
+"                and the distribution URL looks like <em>d111111abcdef8."
+"cloudfront.net</em>, the media files\n"
+"                would have URLs like <em>http://d111111abcdef8.cloudfront."
+"net/db0/path/to/foo.jpg</em>.  You\n"
+"                need to <a href=\"http://www.slideshare.net/artemlivshits/"
+"wordpress-on-s3-now-with-cdn\">configure</a>\n"
+"                the CDN to point it to the cloud storage origin location."
+msgstr ""
+"    Вы можете настроить CDN (напр. <a href=\"http://aws.amazon.com/cloudfront/"
+"\">Amazon CloudFront</a>)\n"
+"                чтобы медиа файлы скачивались ещё быстрее.  Для этого "
+"введите\n"
+"                URL который будет использован вместо сегмента <em>host/bucket</em> "
+"в URL данных в Облаке.\n"
+"                Например, если URL данных в Облаке "
+"<em>s3.amazonaws.com/oblaksoft-yapixx/db0</em>,\n"
+"                а URL сети доставки контента <em>d111111abcdef8."
+"cloudfront.net</em>, то URL медиа файлов будет выгдлядеть\n"
+"                так: <em>http://d111111abcdef8.cloudfront."
+"net/db0/path/to/foo.jpg</em>.  Вам нужно <a href=\"http://www.slideshare.net/artemlivshits/"
+"wordpress-on-s3-now-with-cdn\">настроить</a>\n"
+"                CDN так, чтобы она использовала данные в Облаке в качестве "
+"источника интернет-ресурса."
+
+#: setoptions.php:65
+msgid "Distribution URL"
+msgstr "URL сети доставки контента"
+
+#: setoptions.php:66
+msgid "E.g. %1$s"
+msgstr "Напр. %1$s"
+
+#: setoptions.php:68
+msgid "Cloud database protection"
+msgstr "Сохранность базы данных в Облаке"
+
+#: setoptions.php:69
+msgid ""
+"    If you opt to store your whole WordPress database in the cloud storage, "
+"WordPress to Cloud can\n"
+"                warn you if any of the WordPress tables are not stored in "
+"the cloud. If you decide to ignore\n"
+"                this warning, you should consider protecting your data by "
+"other means (e.g. database backups)."
+msgstr ""
+"    Если Вы хотите, чтобы все данные WordPress хранились в Облаке, "
+"WordPress в Облаке может\n"
+"                выдать предупреждение, если таблицы WordPress не хранятся в "
+"Облаке. Если Вы отключите это предупреждение,\n"
+"                Вам нужно использовать альтернативные методы защиты "
+"данных (напр. резервное копирование)."
+
+#: setoptions.php:73
+msgid "Warn when WordPress tables are not stored in the cloud storage"
+msgstr "Выдавать предупреждение если таблицы WordPress не хранятся в Облаке"
+
+#: setoptions.php:75
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: wp2cloud.php:153
+msgid ""
+"Cannot create <b>%1$s</b> table -- %2$s  %3$s requires the Cloud Storage "
+"Engine for MySQL\n"
+" (%5$s) to be installed and configured on the MySQL server.  As an example "
+"of property configured\n"
+" %4$s and %3$s you can use %6$s."
+msgstr ""
+"Не могу создать таблицу <b>%1$s</b> -- %2$s  Для работы %3$s требуется чтобы "
+"Cloud Storage Engine for MySQL\n"
+" (%5$s) была установлена на MySQL сервер.  Вы можете использовать %6$s "
+"в качестве полностью сконфигурированного сервера с %4$s и %3$s."
+
+#: wp2cloud.php:280
+msgid "WordPress to Cloud"
+msgstr "WordPress в Облаке"
+
+#: wp2cloud.php:346
+msgid ""
+"%1$s, and %2$d more table are not managed by the %3$s and not protected by "
+"the cloud storage."
+msgid_plural ""
+"%1$s, and %2$d more tables are not managed by the %3$s and not protected by "
+"the clou storage."
+msgstr[0] "%1$s, и ещё %2$d таблица не находятся под управлением %3$s и не "
+"хранятся в Облаке"
+msgstr[1] "%1$s, и ещё %2$d таблицы не находятся под управлением %3$s и не "
+"хранятся в Облаке"
+msgstr[2] "%1$s, и ещё %2$d таблиц не находятся под управлением %3$s и не "
+"хранятся в Облаке"
+msgstr[3] "%1$s, и ещё %2$d таблица не находятся под управлением %3$s и не "
+"хранятся в Облаке"
+
+#: wp2cloud.php:352
+msgid ""
+"%1$s table is not managed by the %2$s and not protected by the cloud storage."
+msgid_plural ""
+"%1$s tables are not managed by the %2$s and not protected by the cloud "
+"storage."
+msgstr[0] "Таблица %1$s не находится под управлением %2$s и не "
+"хранится в Облаке"
+msgstr[1] "Таблицы %1$s не находятся под управлением %2$s и не "
+"хранятся в Облаке"
+msgstr[2] "Таблицы %1$s не находятся под управлением %2$s и не "
+"хранятся в Облаке"
+msgstr[3] "Таблицы %1$s не находятся под управлением %2$s и не "
+"хранятся в Облаке"
+

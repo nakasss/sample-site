@@ -412,6 +412,4 @@ add_filter( 'widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args' );
  * 
  * Function files is in ./scopic-admin-functions/*
  */
-require_once locate_template('scopic-admin-functions/video-post.php');
-require_once locate_template('scopic-admin-functions/modify-func.php');
-require_once locate_template('scopic-admin-functions/hide-func.php');
+require_once locate_template('scopic-admin-functions/scopic-admin.php');

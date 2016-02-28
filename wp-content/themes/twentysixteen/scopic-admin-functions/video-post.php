@@ -32,12 +32,14 @@ function add_video_post_type() {
         //'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields')
         'supports' => array('title', 'thumbnail')
     );
-    register_post_type('videos', $params);
+    if( function_exists( 'register_post_type' )) {
+        register_post_type('videos', $params);
+    }
 }
 
 
 /*
- * Add Category to "Video Post"
+ * Add "Video Post" Category
  */
 add_action('init', 'add_video_post_cat');
 function add_video_post_cat() {
@@ -51,7 +53,9 @@ function add_video_post_cat() {
         'show_admin_column' => true,
         'hierarchical' => true
     );
-    register_taxonomy('videos-cat', array('videos'), $params);
+    if( function_exists( 'register_taxonomy' )) {
+        register_taxonomy('videos-cat', array('videos'), $params);
+    }
 }
 
 
@@ -66,12 +70,29 @@ function add_video_upload_box() {
     }
 }
 function create_video_uploader() {
-  // 認証に nonce を使う
-  echo '<input type="hidden" name="myplugin_noncename" id="myplugin_noncename" value="' . 
-    wp_create_nonce( plugin_basename(__FILE__) ) . '" />';
-  // データ入力用の実際のフォーム
-  echo '<label for="myplugin_new_field">' . __("Description for this field", 'myplugin_textdomain' ) . '</label> ';
-  echo '<input type="text" name="myplugin_new_field" value="whatever" size="25" />';
+    require_once locate_template('scopic-admin-functions/video-uploader/video-uploader-view.php');
+}
+//Save box content
+add_action('save_post', 'save_uploaded_video');
+function save_uploaded_video( $post_id ) {
+    $video_url_nonce_action = 'video-url-nonce-action-'.$post_id; // Nonce was set in ./video-uploader/video-uploader-view.php
+    $video_url_nonce = filter_input(INPUT_POST, 'video-url-nonce');
+    error_log('Video nonce : '.$video_url_nonce, 0);
+    if (!wp_verify_nonce($video_url_nonce, $video_url_nonce_action)) {
+        return $post_id;
+    }
+    
+    if ( wp_is_post_revision( $post_id ) ) {
+        return $post_id;
+    }
+    
+    $video_url_input_name = 'video-url';
+    $updated_video_url = filter_input(INPUT_POST, $video_url_input_name);
+    error_log('Input URL : '.$updated_video_url, 0);
+    if ( isset($updated_video_url) && !is_null($updated_video_url) ) {
+        $video_url_meta_key = 'video-url';
+        update_post_meta($post_id, $video_url_meta_key, $updated_video_url);
+    }
 }
 
 
@@ -97,19 +118,15 @@ function create_custom_editor() {
     wp_editor($content, $editor_id, $params);
 }
 // Save box content
-add_action('edit_post', 'edit_post_custom_test');
-function edit_post_custom_test($post_id) {
-    error_log('EDIT POST : '.$post_id.PHP_EOL, 0);
-}
 add_action('save_post', 'save_video_description');
 function save_video_description($post_id) {
     $prev_post = get_post($post_id, OBJECT, 'edit');
     if ($prev_post->post_type !== 'videos') {
-        return;
+        return $post_id;
     }
     
     if ( wp_is_post_revision( $post_id ) ) {
-        return;
+        return $post_id;
     }
     
     $editor_id = 'video-description-editor';
@@ -119,7 +136,7 @@ function save_video_description($post_id) {
         remove_action( 'save_post', 'save_video_description' );
         $is_posted = wp_update_post($prev_post); //update
         if ($is_posted === 0) {
-            error_log('Post Updated Failed'.PHP_EOL, 0);
+            //TODO : Error handling
         }
         add_action('save_post', 'save_video_description');
     }
@@ -127,22 +144,96 @@ function save_video_description($post_id) {
 
 
 /*
- * Add FB content edit box
+ * FB content edit box
  */
+// Add box
 add_action('admin_menu', 'add_fb_share_content_box');
 function add_fb_share_content_box() {
     if( function_exists( 'add_meta_box' )) {
-        add_meta_box('video-fb-box', 'Facebook', 'myplugin_inner_custom_box', 'videos', 'side', 'low');
+        add_meta_box('video-fb-box', 'Facebook', 'create_fb_content_box', 'videos', 'side', 'low');
+    }
+}
+function create_fb_content_box() {
+    $post_id = get_the_ID();
+    
+    // Nonce 
+    $fb_content_nonce_action = 'fb-content-nonce-action-'.$post_id;
+    $fb_content_nonce = wp_create_nonce($fb_content_nonce_action);
+
+    // Get video url info
+    $fb_content = get_post_meta($post_id, 'fb-share-content', true);
+?>
+<div id="fb-content-wrapper" class="video-post-share-content-wrapper">
+    <input type="hidden" name="fb-share-content-nonce" id="fb-share-content-nonce" value="<?php echo $fb_content_nonce; ?>" />
+    <textarea name="fb-share-content" id="fb-share-content" placeholder="Please input sentence that will be shared in Facebook."><?php echo $fb_content; ?></textarea>
+</div><!-- #fb-content-wrapper -->
+<?php
+}
+// Save box content
+add_action('save_post', 'save_fb_content');
+function save_fb_content( $post_id ) {
+    $fb_content_nonce_action = 'fb-content-nonce-action-'.$post_id;
+    $fb_content_nonce = filter_input(INPUT_POST, 'fb-share-content-nonce');
+    if (!wp_verify_nonce($fb_content_nonce, $fb_content_nonce_action)) {
+        return $post_id;
+    }
+    
+    if ( wp_is_post_revision( $post_id ) ) {
+        return $post_id;
+    }
+    
+    $fb_content_input_name = 'fb-share-content';
+    $updated_fb_content = filter_input(INPUT_POST, $fb_content_input_name);
+    if ( isset($updated_fb_content) && !is_null($updated_fb_content) ) {
+        $fb_content_meta_key = 'fb-share-content';
+        update_post_meta($post_id, $fb_content_meta_key, $updated_fb_content);
     }
 }
 
 
 /*
- * Add FB content edit box
+ * Email content edit box
  */
+// Add box
 add_action('admin_menu', 'add_email_share_content_box');
 function add_email_share_content_box() {
     if( function_exists( 'add_meta_box' )) {
-        add_meta_box('video-email-box', 'Email', 'myplugin_inner_custom_box', 'videos', 'side', 'low');
+        add_meta_box('video-email-box', 'Email', 'create_email_content_box', 'videos', 'side', 'low');
+    }
+}
+function create_email_content_box() {
+    $post_id = get_the_ID();
+    
+    // Nonce 
+    $email_content_nonce_action = 'email-content-nonce-action-'.$post_id;
+    $email_content_nonce = wp_create_nonce($email_content_nonce_action);
+
+    // Get video url info
+    $email_content = get_post_meta($post_id, 'email-share-content', true);
+?>
+<div id="email-content-wrapper" class="video-post-share-content-wrapper">
+    <input type="hidden" name="email-share-content-nonce" id="email-share-content-nonce" value="<?php echo $email_content_nonce; ?>" />
+    <textarea name="email-share-content" id="email-share-content" placeholder="Please input sentence that will be shared through email."><?php echo $email_content; ?></textarea>
+</div><!-- #email-content-wrapper -->
+<?php
+}
+// Save box content
+add_action('save_post', 'save_email_content');
+function save_email_content( $post_id ) {
+    $email_content_nonce_action = 'email-content-nonce-action-'.$post_id;
+    $email_content_nonce = filter_input(INPUT_POST, 'email-share-content-nonce');
+    if ( !wp_verify_nonce($email_content_nonce, $email_content_nonce_action) ) {
+        return $post_id;
+    }
+    
+    if ( wp_is_post_revision( $post_id ) ) {
+        return $post_id;
+    }
+    
+    $email_content_input_name = 'email-share-content';
+    $updated_email_content = filter_input(INPUT_POST, $email_content_input_name);
+    if ( isset($updated_email_content) && !is_null($updated_email_content) ) {
+        $email_content_meta_key = 'email-share-content';
+        update_post_meta($post_id, $email_content_meta_key, $updated_email_content);
     }
 }
