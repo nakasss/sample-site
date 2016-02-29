@@ -77,7 +77,6 @@ add_action('save_post', 'save_uploaded_video');
 function save_uploaded_video( $post_id ) {
     $video_url_nonce_action = 'video-url-nonce-action-'.$post_id; // Nonce was set in ./video-uploader/video-uploader-view.php
     $video_url_nonce = filter_input(INPUT_POST, 'video-url-nonce');
-    error_log('Video nonce : '.$video_url_nonce, 0);
     if (!wp_verify_nonce($video_url_nonce, $video_url_nonce_action)) {
         return $post_id;
     }
@@ -88,7 +87,6 @@ function save_uploaded_video( $post_id ) {
     
     $video_url_input_name = 'video-url';
     $updated_video_url = filter_input(INPUT_POST, $video_url_input_name);
-    error_log('Input URL : '.$updated_video_url, 0);
     if ( isset($updated_video_url) && !is_null($updated_video_url) ) {
         $video_url_meta_key = 'video-url';
         update_post_meta($post_id, $video_url_meta_key, $updated_video_url);

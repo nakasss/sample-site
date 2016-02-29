@@ -1,6 +1,7 @@
-# ignore everything in the root except the "wp-content" directory.
+# ignore everything in the root except the "wp-content" directory and "api" directory.
 /*
 !wp-content/
+!api/
  
 # ignore all files starting with .
 .*

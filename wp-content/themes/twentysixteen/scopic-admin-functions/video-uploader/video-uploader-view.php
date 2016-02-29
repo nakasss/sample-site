@@ -10,7 +10,6 @@ $video_url_nonce = wp_create_nonce($video_url_nonce_action);
 
 // Get video url info
 $video_url = get_post_meta($post_id, 'video-url', true);
-error_log('Updated URL : '.$video_url, 0);
 $is_video_uploaded = (isset($video_url) && !is_null($video_url) && !empty($video_url)) ? true : false;
 
 // Get thumbnail info
