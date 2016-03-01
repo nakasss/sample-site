@@ -175,8 +175,8 @@ function get_video_arr($video) {
     $video_arr['video_duration'] = get_post_meta($video_id, $video_duration_key, true);
     $video_arr['thumbnail_url'] = !empty($video_thumb_id) ? wp_get_attachment_image_src($video_thumb_id, 'full')[0] : '';
     $video_arr['categories'] = get_all_video_cat_by_id($video_id);
-    $video_arr['fb_content'] = get_post_meta($video_id, $email_share_content_key, true);
-    $video_arr['email_content'] = get_post_meta($video_id, $fb_share_content_key, true);
+    $video_arr['fb_content'] = get_post_meta($video_id, $fb_share_content_key, true);
+    $video_arr['email_content'] = get_post_meta($video_id, $email_share_content_key, true);
     $video_arr['created'] = $video->post_date;
     $video_arr['updated'] = $video->post_modified;
 
