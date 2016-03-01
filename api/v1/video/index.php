@@ -210,6 +210,11 @@ function get_video_cat_arr ($cat) {
  * Echo function
  */
 function echo_json ($video_arr) {
+    
+    // Set header TODO : customize for error
+    http_response_code(200);
+    header("Content-Type: application/json; charset=utf-8");
+    
     echo json_encode($video_arr);
 }
 
