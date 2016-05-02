@@ -60,6 +60,57 @@ function add_video_post_cat() {
 
 
 /*
+ * Video Subtitle box
+ */
+//Add box
+add_action('admin_menu', 'add_video_subtitle_box');
+function add_video_subtitle_box() {
+    if( function_exists( 'add_meta_box' )) {
+        add_meta_box('video-subtitle-box', 'Subtitle', 'create_video_subtitle', 'videos', 'normal', 'high');
+    }
+}
+function create_video_subtitle() {
+    $post_id = get_the_ID();
+    
+    // Nonce 
+    $video_subtitle_nonce_action = 'video-subtitle-nonce-action-'.$post_id;
+    $video_subtitle_nonce = wp_create_nonce($video_subtitle_nonce_action);
+
+    // Get video url info
+    $subtitle = get_post_meta($post_id, 'video-subtitle', true);
+?>
+<div id="video-subtitle-wrapper">
+    <input type="hidden" name="video-subtitle-nonce" id="video-subtitle-nonce" value="<?php echo $video_subtitle_nonce; ?>" />
+    <input type="text" name="video-subtitle" id="video-subtitle" value="<?php echo $subtitle; ?>" placeholder="Please input video subtitle if the video has.">
+</div><!-- #video-subtitle-wrapper -->
+<?php
+}
+
+// Save box content
+add_action('save_post', 'save_video_subtitle');
+function save_video_subtitle($post_id) {
+    $video_subtitle_nonce_action = 'video-subtitle-nonce-action-'.$post_id;
+    $video_subtitle_nonce = filter_input(INPUT_POST, 'video-subtitle-nonce');
+    
+    if (!wp_verify_nonce($video_subtitle_nonce, $video_subtitle_nonce_action)) {
+        return $post_id;
+    }
+    
+    if ( wp_is_post_revision( $post_id ) ) {
+        return $post_id;
+    }
+    
+    $subtitle_input_name = 'video-subtitle';
+    $updated_subtitle = filter_input(INPUT_POST, $subtitle_input_name);
+    if ( isset($updated_subtitle) && !is_null($updated_subtitle) ) {
+        $video_subtitle_meta_key = 'video-subtitle';
+        update_post_meta($post_id, $video_subtitle_meta_key, $updated_subtitle);
+    }
+}
+
+
+
+/*
  * Video uploader box
  */
 //Add box
@@ -94,6 +145,9 @@ function save_uploaded_video( $post_id ) {
         if (!empty($updated_video_url)) {
             save_video_duration($post_id);
         }
+        if (!empty($updated_video_url)) {
+            save_video_size($post_id);
+        }
          */
     }
 }
@@ -118,6 +172,46 @@ function save_video_duration ( $post_id ) {
     }
 }
  */
+//Save video url for iphone5
+add_action('save_post', 'save_video_url_iphone5');
+function save_video_url_iphone5( $post_id ) {
+    $video_url_iphone5_nonce_action = 'video-url-iphone5-nonce-action-'.$post_id; // Nonce was set in ./video-uploader/video-uploader-view.php
+    $video_url_iphone5_nonce = filter_input(INPUT_POST, 'video-url-iphone5-nonce');
+    if (!wp_verify_nonce($video_url_iphone5_nonce, $video_url_iphone5_nonce_action)) {
+        return $post_id;
+    }
+    
+    if ( wp_is_post_revision( $post_id ) ) {
+        return $post_id;
+    }
+    
+    $video_url_iphone5_input_name = 'video-url-iphone5';
+    $updated_video_url_iphone5 = filter_input(INPUT_POST, $video_url_iphone5_input_name);
+    if ( isset($updated_video_url_iphone5) && !is_null($updated_video_url_iphone5) ) {
+        $video_url_iphone5_meta_key = 'video-url-iphone5';
+        update_post_meta($post_id, $video_url_iphone5_meta_key, $updated_video_url_iphone5);
+    }
+}
+//Save video size
+add_action('save_post', 'save_video_size');
+function save_video_size ( $post_id ) {
+    $video_size_nonce_action = 'video-size-nonce-action-'.$post_id; // Nonce was set in ./video-uploader/video-uploader-view.php
+    $video_size_nonce = filter_input(INPUT_POST, 'video-size-nonce');
+    if (!wp_verify_nonce($video_size_nonce, $video_size_nonce_action)) {
+        return $post_id;
+    }
+    
+    if ( wp_is_post_revision( $post_id ) ) {
+        return $post_id;
+    }
+    
+    $video_size_input_name = 'video-size';
+    $updated_video_size = filter_input(INPUT_POST, $video_size_input_name);
+    if ( isset($updated_video_size) && !is_null($updated_video_size) ) {
+        $video_size_meta_key = 'video-size';
+        update_post_meta($post_id, $video_size_meta_key, $updated_video_size);
+    }
+}
 
 
 
@@ -175,7 +269,7 @@ function save_video_description($post_id) {
 add_action('admin_menu', 'add_fb_share_content_box');
 function add_fb_share_content_box() {
     if( function_exists( 'add_meta_box' )) {
-        add_meta_box('video-fb-box', 'Facebook', 'create_fb_content_box', 'videos', 'side', 'low');
+        add_meta_box('video-fb-box', 'Facebook Share URL', 'create_fb_content_box', 'videos', 'side', 'low');
     }
 }
 function create_fb_content_box() {
@@ -190,7 +284,7 @@ function create_fb_content_box() {
 ?>
 <div id="fb-content-wrapper" class="video-post-share-content-wrapper">
     <input type="hidden" name="fb-share-content-nonce" id="fb-share-content-nonce" value="<?php echo $fb_content_nonce; ?>" />
-    <textarea name="fb-share-content" id="fb-share-content" placeholder="Please input sentence that will be shared in Facebook."><?php echo $fb_content; ?></textarea>
+    <textarea name="fb-share-content" id="fb-share-content" placeholder="Please input URL that will be shared in Facebook."><?php echo $fb_content; ?></textarea>
 </div><!-- #fb-content-wrapper -->
 <?php
 }

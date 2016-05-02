@@ -1,12 +1,7 @@
 <?php
 
 /* 
- * Video API root
- * 
- * TODO : Deploy "Get All Video IDs"
- * TODO : Deploy "Get All Video Categories"
- * TODO : Deploy "Get Video Info By ID"
- * TODO : Deploy Error
+ * V1 Test API root
  */
 
 
@@ -17,44 +12,14 @@ $api_include_path = dirname( dirname( dirname(__FILE__) ) ).'/include';
 require_once $api_include_path.'/wp-assets.php';
 
 
-
-
 /*
  * First Entry Point
  */
 //ENTRY
-run_video_api();
+run_test_api();
 
-function run_video_api () {
-    
-    
-    echo_json( get_all_video_info() );
-    
-    
-    /*
-     * Deploy later
-     * 
-    $id = filter_input(INPUT_GET, 'id');
-    $type = filter_input(INPUT_GET, 'type');
-    
-    // Call "Get All Video"
-    if (!isset_param($id) && !isset_param($type)) {
-        echo 'Call "Get All Video Info"';
-        return;
-    }
-    
-    // Error Check
-    if (is_empty_param($id) || is_empty_param($type)) {
-        if (is_empty_param($id)) {
-            // ID param error
-        }
-        
-        if (is_empty_param($type)) {
-            // type param error
-        }
-        return;
-    }
-    */
+function run_test_api () {
+    echo_json( get_all_test_video_info() );
 }
 
 
@@ -89,12 +54,12 @@ function is_valid_type($type_value) {
 /*
  * Get All Video Info
  */
-function get_all_video_info() {
+function get_all_test_video_info() {
     $params = array(
         'numberposts'   => -1,
         'post_type'     => 'videos',
         'orderby'       => 'date',
-        'post_status'   => 'publish'
+        'post_status'   => 'publish,private'
     );
     
     $video_posts = get_posts($params);
@@ -110,13 +75,13 @@ function get_all_video_info() {
 /*
  * Get All Video IDs
  */
-function get_all_video_id() {
+function get_all_test_video_id() {
     $params = array(
         'numberposts'   => -1,
         'post_type'     => 'videos',
         'fields'        => 'ids',
         'orderby'       => 'date',
-        'post_status'   => 'publish'
+        'post_status'   => 'publish,private'
     );
     
     return get_posts($params);
@@ -223,37 +188,3 @@ function echo_json ($video_arr) {
     
     echo json_encode($video_arr);
 }
-
-
-/*
- * Test
- */
-//echo_json( get_video_info_by_id(get_all_video_id()[0]) );
-//echo_json(get_all_categories());
-
-
-/*
-//Param check
-//id
-$id_param = filter_input(INPUT_GET, 'id');
-if ( !isset_param($id_param) ) {
-    error_log('NO ID PRAMA'.PHP_EOL, 0);
-} else if ( is_empty_param($id_param) ) {
-    error_log('EMPTY ID PARAM VALUE'.PHP_EOL, 0);
-} else if (!is_numeric_id($id_param)) {
-    error_log('ID is not numeric', 0);    
-} else {
-    error_log('ID : '. $id_param.PHP_EOL, 0);
-}
-//type
-$type_param = filter_input(INPUT_GET, 'type');
-if ( !isset_param($type_param) ) {
-    error_log('NO TYPE PARAM'.PHP_EOL);
-} else if ( is_empty_param($type_param) ) {
-    error_log('EMPTY TYPE PARAM VALUE'.PHP_EOL);
-} else if (!is_valid_type($type_param) ) {
-    error_log('INVALID TYPE NAME'.PHP_EOL);
-} else {
-    error_log('TYPE : '. $type_param.PHP_EOL);
-}
- * */
