@@ -1,7 +1,8 @@
 <?php
 
+
 /* 
- * Video API root
+ * GearVR Video API root
  * 
  * TODO : Deploy "Get All Video IDs"
  * TODO : Deploy "Get All Video Categories"
@@ -28,7 +29,7 @@ run_video_api();
 function run_video_api () {
     
     
-    echo_json( get_all_video_info() );
+    echo_json( get_all_gearvr_info() );
     
     
     /*
@@ -89,7 +90,7 @@ function is_valid_type($type_value) {
 /*
  * Get All Video Info
  */
-function get_all_video_info() {
+function get_all_gearvr_info() {
     $params = array(
         'numberposts'   => -1,
         'post_type'     => 'videos',
@@ -98,12 +99,14 @@ function get_all_video_info() {
     );
     
     $video_posts = get_posts($params);
-    $video_posts_arr = [];
+    $gearvr_posts_arr = [];
     foreach ($video_posts as $video) {
-        $video_posts_arr[] = get_video_arr($video);
+        if (is_gaervr_video($video)) {
+            $gearvr_posts_arr[] = get_gearvr_arr($video);
+        }
     }
     
-    return $video_posts_arr;
+    return $gearvr_posts_arr;
 }
 
 
@@ -158,14 +161,23 @@ function get_all_categories () {
 /*
  * Common Functions
  */
-function get_video_arr($video) {
+function is_gaervr_video ($video) {
+    $video_id = $video->ID;
+    $gearvr_activate_value_key = "gearvr-activate";
+    $gearvr_activate_value = (int)get_post_meta($video_id, $gearvr_activate_value_key, true);
+    if ($gearvr_activate_value === 1) {
+        return true;
+    } else {
+        return false;
+    }      
+}
+
+function get_gearvr_arr($video) {
     $video_subtitle_key = 'video-subtitle'; //TODO : Sould be const
-    $video_url_key = 'video-url'; //TODO : Sould be const
-    $video_url_iphone5_key = 'video-url-iphone5'; //TODO : Sould be const
+    $gearvr_video_url_key = 'video-url-gearvr'; //TODO : Sould be const
+    $gearvr_thumb360_url_key = 'thumb360-url'; //TODO : Sould be const
     $video_duration_key = 'video-duration'; //TODO : Sould be const
     $video_size_key = 'video-size'; //TODO : Sould be const
-    $fb_share_content_key = 'fb-share-content'; //TODO : Sould be const
-    $email_share_content_key = 'email-share-content'; //TODO : Sould be const
 
     $video_id = $video->ID;
     $video_thumb_id = get_post_thumbnail_id($video_id);
@@ -175,14 +187,12 @@ function get_video_arr($video) {
     $video_arr['title'] = $video->post_title;
     $video_arr['subtitle'] = get_post_meta($video_id, $video_subtitle_key, true);
     $video_arr['description'] = $video->post_content;
-    $video_arr['video_url'] = get_post_meta($video_id, $video_url_key, true);
-    $video_arr['video_url_iphone5'] = get_post_meta($video_id, $video_url_iphone5_key, true);
+    $video_arr['video_url'] = get_post_meta($video_id, $gearvr_video_url_key, true);
     $video_arr['video_duration'] = get_post_meta($video_id, $video_duration_key, true);
     $video_arr['video_size'] = get_post_meta($video_id, $video_size_key, true);
     $video_arr['thumbnail_url'] = !empty($video_thumb_id) ? wp_get_attachment_image_src($video_thumb_id, 'full')[0] : '';
+    $video_arr['thumbnail360_url'] = get_post_meta($video_id, $gearvr_thumb360_url_key, true);
     $video_arr['categories'] = get_all_video_cat_by_id($video_id);
-    $video_arr['fb_content'] = get_post_meta($video_id, $fb_share_content_key, true);
-    $video_arr['email_content'] = get_post_meta($video_id, $email_share_content_key, true);
     $video_arr['created'] = $video->post_date;
     $video_arr['updated'] = $video->post_modified;
 
