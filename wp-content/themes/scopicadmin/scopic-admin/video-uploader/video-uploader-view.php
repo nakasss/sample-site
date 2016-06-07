@@ -9,6 +9,8 @@ $video_url_nonce_action = 'video-url-nonce-action-'.$post_id;
 $video_url_nonce = wp_create_nonce($video_url_nonce_action);
 $video_url_iphone5_nonce_action = 'video-url-iphone5-nonce-action-'.$post_id;
 $video_url_iphone5_nonce = wp_create_nonce($video_url_iphone5_nonce_action);
+$video_url_gearvr_nonce_action = 'video-url-gearvr-nonce-action-'.$post_id;
+$video_url_gearvr_nonce = wp_create_nonce($video_url_gearvr_nonce_action);
 $video_duration_nonce_action = 'video-duration-nonce-action-'.$post_id;
 $video_duration_nonce = wp_create_nonce($video_duration_nonce_action);
 $video_size_nonce_action = 'video-size-nonce-action-'.$post_id;
@@ -160,7 +162,9 @@ function async_wp_post_video_size (post_id, size) {
             <input type="hidden" name="video-url-nonce" id="video-url-nonce" value="<?php echo $video_url_nonce; ?>" />
             <input type="text" name="video-url" id="video-url" value="<?php echo get_post_meta($post_id, 'video-url', true); ?>" placeholder="Please input URL of video on library." />
             <input type="hidden" name="video-url-iphone5-nonce" id="video-url-iphone5-nonce" value="<?php echo $video_url_iphone5_nonce; ?>" />
-            <input type="text" name="video-url-iphone5" id="video-url-iphone5" value="<?php echo get_post_meta($post_id, 'video-url-iphone5', true); ?>" placeholder="Please input URL of video on library for iPhone5. Resolution sould be lower than 1080p." />
+            <input type="text" name="video-url-iphone5" id="video-url-iphone5" value="<?php echo get_post_meta($post_id, 'video-url-iphone5', true); ?>" placeholder="Please input URL of video on library for old devices. Resolution sould be lower than 1080p." />
+            <input type="hidden" name="video-url-gearvr-nonce" id="video-url-gearvr-nonce" value="<?php echo $video_url_gearvr_nonce; ?>" />
+            <input type="text" name="video-url-gearvr" id="video-url-gearvr" value="<?php echo get_post_meta($post_id, 'video-url-gearvr', true); ?>" placeholder="Please input URL of video on library to deliver GearVR App." />
             <input type="hidden" name="video-size-nonce" id="video-size-nonce" value="<?php echo $video_size_nonce; ?>" />
             <input type="text" name="video-size" id="video-size" value="<?php echo get_post_meta($post_id, 'video-size', true); ?>" placeholder="Please input URL of video size. (byte)" />
         </div>

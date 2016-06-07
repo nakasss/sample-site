@@ -141,14 +141,6 @@ function save_uploaded_video( $post_id ) {
     if ( isset($updated_video_url) && !is_null($updated_video_url) ) {
         $video_url_meta_key = 'video-url';
         update_post_meta($post_id, $video_url_meta_key, $updated_video_url);
-        /*
-        if (!empty($updated_video_url)) {
-            save_video_duration($post_id);
-        }
-        if (!empty($updated_video_url)) {
-            save_video_size($post_id);
-        }
-         */
     }
 }
 /*
@@ -192,6 +184,28 @@ function save_video_url_iphone5( $post_id ) {
         update_post_meta($post_id, $video_url_iphone5_meta_key, $updated_video_url_iphone5);
     }
 }
+
+//Save video url for GearVR
+add_action('save_post', 'save_video_url_gearvr');
+function save_video_url_gearvr( $post_id ) {
+    $video_url_gearvr_nonce_action = 'video-url-gearvr-nonce-action-'.$post_id; // Nonce was set in ./video-uploader/video-uploader-view.php
+    $video_url_gearvr_nonce = filter_input(INPUT_POST, 'video-url-gearvr-nonce');
+    if (!wp_verify_nonce($video_url_gearvr_nonce, $video_url_gearvr_nonce_action)) {
+        return $post_id;
+    }
+    
+    if ( wp_is_post_revision( $post_id ) ) {
+        return $post_id;
+    }
+    
+    $video_url_gearvr_input_name = 'video-url-gearvr';
+    $updated_video_url_gearvr = filter_input(INPUT_POST, $video_url_gearvr_input_name);
+    if ( isset($updated_video_url_gearvr) && !is_null($updated_video_url_gearvr) ) {
+        $video_url_gearvr_meta_key = 'video-url-gearvr';
+        update_post_meta($post_id, $video_url_gearvr_meta_key, $updated_video_url_gearvr);
+    }
+}
+
 //Save video size
 add_action('save_post', 'save_video_size');
 function save_video_size ( $post_id ) {
@@ -210,6 +224,41 @@ function save_video_size ( $post_id ) {
     if ( isset($updated_video_size) && !is_null($updated_video_size) ) {
         $video_size_meta_key = 'video-size';
         update_post_meta($post_id, $video_size_meta_key, $updated_video_size);
+    }
+}
+
+
+/*
+ * 360 Thumbnail uploader box
+ */
+//Add box
+add_action('admin_menu', 'add_360thumbnail_upload_box');
+function add_360thumbnail_upload_box() {
+    if( function_exists( 'add_meta_box' )) {
+        add_meta_box('360thumbnail_upload_box-upload-box', '360 Thumbnail', 'create_360thumbnail_uploader', 'videos', 'normal', 'default');
+    }
+}
+function create_360thumbnail_uploader() {
+    require_once locate_template('scopic-admin/360thumbnail-uploader/360thumbnail-uploader-view.php');
+}
+//Save box content
+add_action('save_post', 'save_uploaded_thumb360');
+function save_uploaded_thumb360 ( $post_id ) {
+    $thumb360_url_nonce_action = 'thumb360-url-nonce-action-'.$post_id; // Nonce was set in ./video-uploader/360thumbnail-uploader-view.php
+    $thumb360_url_nonce = filter_input(INPUT_POST, 'thumb360-url-nonce');
+    if (!wp_verify_nonce($thumb360_url_nonce, $thumb360_url_nonce_action)) {
+        return $post_id;
+    }
+    
+    if ( wp_is_post_revision( $post_id ) ) {
+        return $post_id;
+    }
+    
+    $thumb360_url_input_name = 'thumb360-url';
+    $updated_thumb360_url = filter_input(INPUT_POST, $thumb360_url_input_name);
+    if ( isset($updated_thumb360_url) && !is_null($updated_thumb360_url) ) {
+        $thumb360_url_meta_key = 'thumb360-url';
+        update_post_meta($post_id, $thumb360_url_meta_key, $updated_thumb360_url);
     }
 }
 
@@ -354,5 +403,61 @@ function save_email_content( $post_id ) {
     if ( isset($updated_email_content) && !is_null($updated_email_content) ) {
         $email_content_meta_key = 'email-share-content';
         update_post_meta($post_id, $email_content_meta_key, $updated_email_content);
+    }
+}
+
+
+/*
+ * Gear VR Delivery Activate Box
+ */
+// Add box
+add_action('admin_menu', 'add_gearvr_activate_box');
+function add_gearvr_activate_box() {
+    if( function_exists( 'add_meta_box' )) {
+        add_meta_box('gearvr-activate-box', 'Gear VR Activate', 'create_gearvr_activate_box', 'videos', 'side', 'low');
+    }
+}
+function create_gearvr_activate_box() {
+    $post_id = get_the_ID();
+    
+    // Nonce 
+    $gearvr_activate_nonce_action = 'gearvr-activate-nonce-action-'.$post_id;
+    $gearvr_activate_nonce = wp_create_nonce($gearvr_activate_nonce_action);
+
+    // Get video url info
+    $gearvr_activate_value = get_post_meta($post_id, 'gearvr-activate', true);
+    if (!isset($gearvr_activate_value) || empty($gearvr_activate_value)) {
+        $gearvr_activate_integer = 0;
+    } else {
+        $gearvr_activate_integer = 1;
+    }
+?>
+<div id="gearvr-activate-wrapper" class="video-post-share-content-wrapper">
+    <input type="hidden" name="gearvr-activate-nonce" id="gearvr-activate-nonce" value="<?php echo $gearvr_activate_nonce; ?>" />
+    <input type="checkbox" name="gearvr-activate" id="gearvr-activate" value="1" <?php if ($gearvr_activate_integer === 1) echo 'checked="checked"'; ?>/>
+</div><!-- #email-content-wrapper -->
+<?php
+}
+// Save box content
+add_action('save_post', 'save_gearvr_activate');
+function save_gearvr_activate( $post_id ) {
+    $gearvr_activate_nonce_action = 'gearvr-activate-nonce-action-'.$post_id;
+    $gearvr_activate_nonce = filter_input(INPUT_POST, 'gearvr-activate-nonce');
+    if ( !wp_verify_nonce($gearvr_activate_nonce, $gearvr_activate_nonce_action) ) {
+        return $post_id;
+    }
+    
+    if ( wp_is_post_revision( $post_id ) ) {
+        return $post_id;
+    }
+    
+    $gearvr_activate_input_name = 'gearvr-activate';
+    $updated_gearvr_activate = filter_input(INPUT_POST, $gearvr_activate_input_name);
+    if ( isset($updated_gearvr_activate) && !is_null($updated_gearvr_activate)) {
+        $gearvr_activate_meta_key = 'gearvr-activate';
+        update_post_meta($post_id, $gearvr_activate_meta_key, "1");
+    } else {
+        $gearvr_activate_meta_key = 'gearvr-activate';
+        update_post_meta($post_id, $gearvr_activate_meta_key, "");
     }
 }
